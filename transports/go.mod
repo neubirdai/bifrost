@@ -241,3 +241,8 @@ require (
 )
 
 replace github.com/mark3labs/mcp-go => github.com/maximhq/mcp-go v0.0.0-20261102181017-b7da3bc145a1
+
+// NeuBird custom build: compile the local core/ (core v1.15.1 + the NeuBird-bundled
+// maximhq/bifrost PRs) instead of the published core v1.15.1 module. Every other
+// module keeps its pinned version from the Go proxy.
+replace github.com/maximhq/bifrost/core => ../core
