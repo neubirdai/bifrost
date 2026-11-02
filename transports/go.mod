@@ -239,3 +239,8 @@ require (
 	gorm.io/driver/clickhouse v0.7.0 // indirect
 	gorm.io/driver/postgres v1.6.0 // indirect
 )
+
+// NeuBird custom build: compile the local core/ (core v1.14.1 + maximhq/bifrost
+// PR #9258) instead of the published core v1.14.1 module. Every other module
+// keeps its pinned version from the Go proxy.
+replace github.com/maximhq/bifrost/core => ../core
