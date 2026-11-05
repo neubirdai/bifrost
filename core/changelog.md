@@ -1,0 +1,1 @@
+- fix: anthropic - a deferred web search is replayed without a made-up web_search_tool_result, so its continuation no longer 400s (#9591) [@sangram-neubird](https://github.com/sangram-neubird)
