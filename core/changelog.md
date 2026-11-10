@@ -1,3 +1,4 @@
+- fix: anthropic - a deferred web search is replayed without a made-up web_search_tool_result, so its continuation no longer 400s (#9591) [@sangram-neubird](https://github.com/sangram-neubird)
 - fix: chat completion requests with no messages return a 400 instead of crashing the gateway, and a converter that returns a nil request body yields an error on every provider
 - fix: gemini - skip null entries in `parts` and `functionDeclarations` on Gemini and Vertex requests and responses instead of panicking
 - fix: recover panics on provider stream goroutines and in plugin post-hooks; the stream ends with one terminal 500 error chunk, and the remaining post-hooks still run
