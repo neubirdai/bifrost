@@ -785,7 +785,7 @@ func StripUnsupportedFieldsFromRawBody(jsonBody []byte, provider schemas.ModelPr
 	// removed, as is a replayed compaction block's tool_changes; the text next to them stays,
 	// and a message left with no content is dropped whole rather than sent empty.
 	//
-	// The typed path needs no twin: inlineMidConversationSystem keeps only the text blocks.
+	// The typed twin is withoutToolChangeBlocks in convertBifrostMessagesToAnthropicMessages.
 	if !features.MidConvToolChanges && mayCarryToolChangeBlocks(jsonBody) {
 		if msgs := providerUtils.GetJSONField(jsonBody, "messages"); msgs.IsArray() {
 			type edit struct {

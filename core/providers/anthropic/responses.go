@@ -6201,6 +6201,10 @@ func convertBifrostMessagesToAnthropicMessages(ctx *schemas.BifrostContext, bifr
 					// string must not fall through to the hoist branch and lose the effort.
 					content = nil
 				}
+				// The beta filter drops mid-conversation-tool-changes here; a native block would 400.
+				if !supportsToolChangeBlocks(caps.Provider()) {
+					content = withoutToolChangeBlocks(content)
+				}
 				// Per-message effort override (beta mid-conversation-output-config). The
 				// effort-only form carries no text, is exempt from the placement rules and can
 				// sit anywhere in messages, including as the first entry (Anthropic effort
@@ -7339,6 +7343,34 @@ func convertAnthropicContentBlocksToResponsesMessages(ctx *schemas.BifrostContex
 // at the position it had in the turn. The default merges all thinking blocks into one item
 // prepended to the turn, which relocates signed blocks of an interleaved-thinking turn and is
 // rejected by Bedrock and Anthropic ("thinking blocks ... cannot be modified", issue #7768).
+
+// supportsToolChangeBlocks: unknown providers keep the blocks, as in StripUnsupportedFieldsFromRawBody.
+func supportsToolChangeBlocks(provider schemas.ModelProvider) bool {
+	features, ok := ProviderFeatures[provider]
+	return !ok || features.MidConvToolChanges
+}
+
+// withoutToolChangeBlocks drops tool_addition / tool_removal blocks; nil when nothing is left.
+func withoutToolChangeBlocks(content *AnthropicContent) *AnthropicContent {
+	if content == nil || len(content.ContentBlocks) == 0 {
+		return content
+	}
+	kept := make([]AnthropicContentBlock, 0, len(content.ContentBlocks))
+	for _, b := range content.ContentBlocks {
+		if !isToolChangeBlock(b.Type) {
+			kept = append(kept, b)
+		}
+	}
+	if len(kept) == len(content.ContentBlocks) {
+		return content
+	}
+	if len(kept) == 0 && (content.ContentStr == nil || *content.ContentStr == "") && content.ContentObj == nil {
+		return nil
+	}
+	out := *content
+	out.ContentBlocks = kept
+	return &out
+}
 
 // isToolChangeBlock reports whether an Anthropic block is a mid-conversation tool change
 // (tool_addition / tool_removal). These are only legal on role:"system" messages.
