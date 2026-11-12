@@ -9,7 +9,7 @@ import (
 )
 
 // setMidConvSystemRecord installs a datasheet record saying (provider, model) accepts
-// mid-conversation system messages, as the live datasheet now does for vertex_ai Opus 5.5.
+// mid-conversation system messages, as the datasheet did for vertex_ai Opus 5.5.
 func setMidConvSystemRecord(t *testing.T, provider schemas.ModelProvider) {
 	t.Helper()
 	yes := true
@@ -72,11 +72,11 @@ func countToolChangeBlocks(msgs []AnthropicMessage) (n int, systemText int) {
 	return n, systemText
 }
 
-// Vertex and Bedrock never get the mid-conversation-tool-changes beta, so a datasheet row
-// enabling mid-conversation system messages must not carry tool_addition through natively:
-// Vertex 400s "Input tag 'tool_addition' ... does not match any of the expected tags".
+// A provider without MidConvToolChanges never gets the beta, so a datasheet row enabling
+// mid-conversation system messages must not carry tool_addition through natively: without
+// the beta the API 400s "Input tag 'tool_addition' ... does not match any of the expected tags".
 func TestToolChangeBlocks_StrippedWhereBetaUnsupported(t *testing.T) {
-	for _, provider := range []schemas.ModelProvider{schemas.Vertex, schemas.Bedrock} {
+	for _, provider := range []schemas.ModelProvider{schemas.DeepSeek, schemas.Fireworks} {
 		t.Run(string(provider)+"/tool_addition only", func(t *testing.T) {
 			setMidConvSystemRecord(t, provider)
 			out, err := ToAnthropicResponsesRequest(effortTestCtx(t), toolAdditionRequest(provider, false))
