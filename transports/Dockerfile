@@ -27,6 +27,9 @@
   # Set environment for CGO-enabled build (required for go-sqlite3)
   ENV CGO_ENABLED=1 GOOS=linux
 
+  # NeuBird custom build: transports/go.mod replaces the core module with
+  # ../core (= /core here), so the patched local core/ is compiled in.
+  COPY core/ /core/
   COPY transports/go.mod transports/go.sum ./
   RUN ls
   RUN cat go.mod
