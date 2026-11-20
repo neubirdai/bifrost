@@ -12,6 +12,10 @@
   # Copy UI source code
   COPY ui/ ./
 
+  # NeuBird: vite build of the v2.6.0 UI exceeds Node's default ~2 GB heap on a
+  # 16 GB runner and aborts with "JavaScript heap out of memory".
+  ENV NODE_OPTIONS=--max-old-space-size=6144
+
   # Build UI (skip the copy-build step)
   RUN npm run build-enterprise
   # Skip the copy-build step since we'll copy the files in the Go build stage
