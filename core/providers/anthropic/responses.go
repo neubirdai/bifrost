@@ -6535,11 +6535,9 @@ func convertBifrostMessagesToAnthropicMessages(ctx *schemas.BifrostContext, bifr
 				}
 			}
 
-			// Prepend any pending reasoning blocks to ensure they come BEFORE tool_use blocks
+			// Reasoning stays where it was (#10451); see the web_search_call case.
 			if len(pendingReasoningContentBlocks) > 0 {
-				copied := make([]AnthropicContentBlock, len(pendingReasoningContentBlocks))
-				copy(copied, pendingReasoningContentBlocks)
-				pendingToolCalls = append(copied, pendingToolCalls...)
+				pendingToolCalls = append(pendingToolCalls, pendingReasoningContentBlocks...)
 				pendingReasoningContentBlocks = nil
 			}
 
@@ -6573,11 +6571,9 @@ func convertBifrostMessagesToAnthropicMessages(ctx *schemas.BifrostContext, bifr
 						}
 					}
 
-					// Prepend any pending reasoning blocks to ensure they come BEFORE tool_use blocks
+					// Reasoning stays where it was (#10451); see the web_search_call case.
 					if len(pendingReasoningContentBlocks) > 0 {
-						copied := make([]AnthropicContentBlock, len(pendingReasoningContentBlocks))
-						copy(copied, pendingReasoningContentBlocks)
-						pendingToolCalls = append(copied, pendingToolCalls...)
+						pendingToolCalls = append(pendingToolCalls, pendingReasoningContentBlocks...)
 						pendingReasoningContentBlocks = nil
 					}
 
@@ -6615,11 +6611,9 @@ func convertBifrostMessagesToAnthropicMessages(ctx *schemas.BifrostContext, bifr
 				}
 			}
 
-			// Prepend any pending reasoning blocks to ensure they come BEFORE tool_use blocks
+			// Reasoning stays where it was (#10451); see the web_search_call case.
 			if len(pendingReasoningContentBlocks) > 0 {
-				copied := make([]AnthropicContentBlock, len(pendingReasoningContentBlocks))
-				copy(copied, pendingReasoningContentBlocks)
-				pendingToolCalls = append(copied, pendingToolCalls...)
+				pendingToolCalls = append(pendingToolCalls, pendingReasoningContentBlocks...)
 				pendingReasoningContentBlocks = nil
 			}
 
@@ -6681,10 +6675,9 @@ func convertBifrostMessagesToAnthropicMessages(ctx *schemas.BifrostContext, bifr
 						Role: AnthropicMessageRoleAssistant,
 					}
 				}
+				// Reasoning stays where it was (#10451); see the web_search_call case.
 				if len(pendingReasoningContentBlocks) > 0 {
-					copied := make([]AnthropicContentBlock, len(pendingReasoningContentBlocks))
-					copy(copied, pendingReasoningContentBlocks)
-					pendingToolCalls = append(copied, pendingToolCalls...)
+					pendingToolCalls = append(pendingToolCalls, pendingReasoningContentBlocks...)
 					pendingReasoningContentBlocks = nil
 				}
 				pendingToolCalls = append(pendingToolCalls, advisorBlocks...)
@@ -6708,10 +6701,9 @@ func convertBifrostMessagesToAnthropicMessages(ctx *schemas.BifrostContext, bifr
 						Role: AnthropicMessageRoleAssistant,
 					}
 				}
+				// Reasoning stays where it was (#10451); see the web_search_call case.
 				if len(pendingReasoningContentBlocks) > 0 {
-					copied := make([]AnthropicContentBlock, len(pendingReasoningContentBlocks))
-					copy(copied, pendingReasoningContentBlocks)
-					pendingToolCalls = append(copied, pendingToolCalls...)
+					pendingToolCalls = append(pendingToolCalls, pendingReasoningContentBlocks...)
 					pendingReasoningContentBlocks = nil
 				}
 				pendingToolCalls = append(pendingToolCalls, toolSearchBlocks...)
@@ -6734,10 +6726,9 @@ func convertBifrostMessagesToAnthropicMessages(ctx *schemas.BifrostContext, bifr
 						Role: AnthropicMessageRoleAssistant,
 					}
 				}
+				// Reasoning stays where it was (#10451); see the web_search_call case.
 				if len(pendingReasoningContentBlocks) > 0 {
-					copied := make([]AnthropicContentBlock, len(pendingReasoningContentBlocks))
-					copy(copied, pendingReasoningContentBlocks)
-					pendingToolCalls = append(copied, pendingToolCalls...)
+					pendingToolCalls = append(pendingToolCalls, pendingReasoningContentBlocks...)
 					pendingReasoningContentBlocks = nil
 				}
 				pendingToolCalls = append(pendingToolCalls, codeExecBlocks...)
@@ -6758,10 +6749,9 @@ func convertBifrostMessagesToAnthropicMessages(ctx *schemas.BifrostContext, bifr
 						Role: AnthropicMessageRoleAssistant,
 					}
 				}
+				// Reasoning stays where it was (#10451); see the web_search_call case.
 				if len(pendingReasoningContentBlocks) > 0 {
-					copied := make([]AnthropicContentBlock, len(pendingReasoningContentBlocks))
-					copy(copied, pendingReasoningContentBlocks)
-					pendingToolCalls = append(copied, pendingToolCalls...)
+					pendingToolCalls = append(pendingToolCalls, pendingReasoningContentBlocks...)
 					pendingReasoningContentBlocks = nil
 				}
 				pendingToolCalls = append(pendingToolCalls, webFetchBlocks...)
